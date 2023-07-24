@@ -12,7 +12,7 @@ export default function Course({ course }) {
                     <img alt='mentorImge' src={course.mentorImage} className='h-full rounded-sm object-cover'></img>
                 </div>
                 <div className='h-10 w-10 rounded-md absolute right-2 -bottom-11'>
-                    <img alt='level' src={`/images/icon-title-course-${course.level}.png`} className='h-full object-cover'></img>
+                    <img alt='level' src={`${course.level ? `/images/icon-title-course-${course.level}.png` : '/images/hot.png'}`} className='h-full object-cover'></img>
                 </div>
             </div>
             <h2 className='mt-6 text-md text-black font-semibold my-3'>{course.name}</h2>
@@ -38,7 +38,7 @@ export default function Course({ course }) {
                     {course.lesson} {" Buổi học"}
                 </span>
             </div>
-            <button className='bg-main py-1 flex-colo rounded-md uppercase w-full text-white mb-4 hover:bg-orange-200 transitions font-medium hover:text-main'>xem chi tiết</button>
+            <button className='btn-main flex-colo w-full  mb-4 transitions'>xem chi tiết</button>
         </div>
     )
 }

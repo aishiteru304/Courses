@@ -41,7 +41,7 @@ export default function Header() {
     return (
         <>
             {/* PC */}
-            <div className='h-20 border-b-2 border-gray-800 fixed top-0 right-0 left-0 bg-white z-10'>
+            <div className='h-20 border-b-2 border-gray-800 fixed top-0 right-0 left-0 bg-white z-40'>
                 <div className='h-full max-w-5xl mx-auto flex sm:px-2 sm:justify-start justify-between pr-8 pl-4'>
 
                     {/* Logo section */}

@@ -9,6 +9,9 @@ import NotFound from './Pages/NotFound'
 import Aos from 'aos'
 import "aos"
 import "aos/dist/aos.css"
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 import { Toaster } from 'react-hot-toast';
 
 

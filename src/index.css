@@ -22,3 +22,43 @@ html {
 .transitions {
     @apply transition duration-300 ease-in;
 }
+
+/* custom paging of swiper */
+.swiper-pagination-bullet {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: rgb(255 99 14) !important;
+    scale: (1.2);
+}
+
+.rounded-corner-image {
+    clip-path: polygon(0 0, 0% 100%, 640% 100%);
+}
+
+.rounded-corner-image-reverse {
+    clip-path: polygon(-540% 100%, 100% 100%, 100% 0%);
+}
+
+@media (max-width:767px) {
+    .rounded-corner-image {
+        clip-path: none;
+    }
+
+    .rounded-corner-image-reverse {
+        clip-path: none;
+
+    }
+}
+
+/* Btn main */
+.btn-main {
+    @apply border-2 border-transparent bg-main text-white px-2 py-1 rounded-md uppercase font-semibold text-center;
+}
+
+.btn-main:hover {
+    @apply text-main bg-white border-main;
+}

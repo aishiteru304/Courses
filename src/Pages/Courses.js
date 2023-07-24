@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '../Layout/MainLayout'
 import { Link } from 'react-router-dom'
 import { AiOutlineRight, AiOutlineCaretDown, AiOutlineCaretRight } from 'react-icons/ai'
@@ -9,9 +9,12 @@ import { CoursesData } from '../Data/CoursesData'
 import { toast } from 'react-hot-toast'
 import ReactPaginate from "react-paginate";
 import { BsFillCaretLeftFill, BsFillCaretRightFill } from 'react-icons/bs'
+import NumberInput from '../Components/NumberInput'
 
 const Categories = ["online", "offline"]
 const Fields = ["Back-End", "Front-End", "Database", "Cấp tốc", "Other", "STEM"]
+
+
 export default function Courses() {
 
     const [isShowPrice, setIsShowPrice] = useState(false)
@@ -20,40 +23,33 @@ export default function Courses() {
     const [isShowFields, setIsShowFields] = useState(false)
 
     // HANDLE PRICE
-    const [price, setPrice] = useState(["0", "10.000.000"])
+    // const [price, setPrice] = useState(["0", "10.000.000"])
+    const [priceFrom, setPriceFrom] = useState(0)
+    const [priceTo, setPriceTo] = useState(10000000)
     const [isErrPrice, setIsErrPrice] = useState([false, false])
 
-    // Hàm xử lí khoảng giá
-    const handleOnchangePrice = (e) => {
-        let { name, value } = e.target
-        // Xóa các kí tự không phải số
-        value = value.replace(/\D/g, "");
-        if (value) {
-            setPrice(prev => {
-                return {
-                    ...prev,
-                    [name]: parseInt(value).toLocaleString('vi-VN')
-                }
-            })
-        }
-        else setPrice(prev => {
-            return {
-                ...prev,
-                [name]: ""
-            }
-        })
+
+    const handleFromPrice = (values) => {
+        let { value } = values;
+        setPriceFrom(parseInt(value))
     }
+
+    const handleToPrice = (values) => {
+        let { value } = values;
+        setPriceTo(parseInt(value))
+    }
+
 
     // Bắt lỗi price
     useEffect(() => {
-        if (price[0] && price[1]) {
-            if (parseInt(price[0].replace(/\D/g, "")) > parseInt(price[1].replace(/\D/g, ""))) {
-                setIsErrPrice([false, true])
-            }
+        if (!isNaN(priceFrom) && !isNaN(priceTo)) {
+            setIsErrPrice([false, false])
+
+            if (parseInt(priceFrom) >= parseInt(priceTo)) setIsErrPrice([false, true])
             else setIsErrPrice([false, false])
         }
         else setIsErrPrice([true, false])
-    }, [price])
+    }, [priceFrom, priceTo])
 
 
     // HANDLE CATEGORY
@@ -123,7 +119,7 @@ export default function Courses() {
             toast("Vui lòng nhập đúng giá trị giá", { style: { color: 'red', fontWeight: '500' } })
         else {
             let temp = [...CoursesData]
-            temp = temp.filter((item) => item.price >= parseInt(price[0].replace(/\D/g, "")) && item.price <= parseInt(price[1].replace(/\D/g, "")))
+            temp = temp.filter((item) => item.price >= priceFrom && item.price <= priceTo)
 
             const categorySelected = category.indexOf(true)
             if (categorySelected > -1) {
@@ -186,27 +182,19 @@ export default function Courses() {
                             <div className={`sm:block ${isShowPrice ? 'block' : 'hidden'}`}>
                                 <h4 className='text-text text-xs my-1 font-semibold'>Từ giá</h4>
                                 <div className='relative'>
-                                    <input
+                                    <NumberInput
                                         className='w-full outline-none rounded-md py-1 pl-2 border-2 border-gray-200 placeholder:text-gray-400 placeholder:font-semibold font-semibold text-text'
-                                        placeholder='0'
-                                        type='text'
-                                        name="0"
-                                        value={price[0]}
-                                        onChange={handleOnchangePrice}
+                                        onChange={handleFromPrice}
+                                        value={priceFrom}
                                     />
-                                    <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-text font-semibold">VNĐ</span>
                                 </div>
                                 <h4 className='text-text text-xs my-1 font-semibold'>Đến giá</h4>
                                 <div className='relative'>
-                                    <input
+                                    <NumberInput
                                         className='w-full outline-none rounded-md py-1 pl-2 border-2 border-gray-200 placeholder:text-gray-400 placeholder:font-semibold font-semibold text-text'
-                                        placeholder='10.000.000'
-                                        type='text'
-                                        name="1"
-                                        value={price[1]}
-                                        onChange={handleOnchangePrice}
+                                        onChange={handleToPrice}
+                                        value={priceTo}
                                     />
-                                    <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-text font-semibold">VNĐ</span>
                                 </div>
                             </div>
 
@@ -281,7 +269,7 @@ export default function Courses() {
                                 }
                             </div>
 
-                            <button onClick={handleSearch} className='bg-main text-white flex-colo text-sm py-1 px-auto w-full font-medium mt-3 rounded-md hover:text-main hover:bg-orange-200 transitions mb-4'>Tìm kiếm</button>
+                            <button onClick={handleSearch} className='btn-main flex-colo text-sm px-auto w-full mt-3 transitions mb-4'>Tìm kiếm</button>
                         </div>
 
                         {/* List courses section */}
